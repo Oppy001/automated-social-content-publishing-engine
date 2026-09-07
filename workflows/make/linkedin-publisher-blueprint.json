@@ -1,0 +1,527 @@
+{
+    "subflows": [
+        {
+            "flow": [
+                {
+                    "id": 1,
+                    "module": "gateway:CustomWebHook",
+                    "version": 1,
+                    "parameters": {
+                        "hook": 3163969,
+                        "maxResults": 1
+                    },
+                    "mapper": {},
+                    "metadata": {
+                        "designer": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "restore": {
+                            "parameters": {
+                                "hook": {
+                                    "data": {
+                                        "editable": "true"
+                                    },
+                                    "label": "linkedin Trigger"
+                                }
+                            }
+                        },
+                        "parameters": [
+                            {
+                                "name": "hook",
+                                "type": "hook:gateway-webhook",
+                                "label": "Webhook",
+                                "required": true
+                            },
+                            {
+                                "name": "maxResults",
+                                "type": "number",
+                                "label": "Maximum number of results"
+                            }
+                        ],
+                        "interface": [
+                            {
+                                "name": "text",
+                                "type": "text"
+                            },
+                            {
+                                "name": "image_url",
+                                "type": "text"
+                            },
+                            {
+                                "name": "post_type",
+                                "type": "text"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "id": 2,
+                    "module": "builtin:BasicRouter",
+                    "version": 1,
+                    "mapper": null,
+                    "metadata": {
+                        "designer": {
+                            "x": 312,
+                            "y": 1
+                        }
+                    },
+                    "routes": [
+                        {
+                            "flow": [
+                                {
+                                    "id": 3,
+                                    "module": "http:DownloadFile",
+                                    "version": 4,
+                                    "parameters": {
+                                        "authenticationType": "noAuth"
+                                    },
+                                    "filter": {
+                                        "name": "Image Post only",
+                                        "conditions": [
+                                            [
+                                                {
+                                                    "a": "{{1.post_type}}",
+                                                    "b": "Image",
+                                                    "o": "text:equal"
+                                                }
+                                            ]
+                                        ]
+                                    },
+                                    "mapper": {
+                                        "url": "{{1.image_url}}",
+                                        "shareCookies": false,
+                                        "stopOnHttpError": true
+                                    },
+                                    "metadata": {
+                                        "designer": {
+                                            "x": 600,
+                                            "y": -150
+                                        },
+                                        "restore": {
+                                            "expect": {
+                                                "headers": {
+                                                    "mode": "chose"
+                                                },
+                                                "shareCookies": {
+                                                    "mode": "chose"
+                                                },
+                                                "queryParameters": {
+                                                    "mode": "chose"
+                                                },
+                                                "stopOnHttpError": {
+                                                    "mode": "chose"
+                                                }
+                                            },
+                                            "parameters": {
+                                                "authenticationType": {
+                                                    "label": "No authenticationUse when no credentials are required for the request."
+                                                }
+                                            }
+                                        },
+                                        "parameters": [
+                                            {
+                                                "name": "authenticationType",
+                                                "type": "select",
+                                                "label": "Authentication type",
+                                                "required": true,
+                                                "validate": {
+                                                    "enum": [
+                                                        "noAuth",
+                                                        "apiKey",
+                                                        "basicAuth",
+                                                        "oAuth"
+                                                    ]
+                                                }
+                                            }
+                                        ],
+                                        "expect": [
+                                            {
+                                                "name": "url",
+                                                "type": "url",
+                                                "label": "URL",
+                                                "required": true
+                                            },
+                                            {
+                                                "name": "stopOnHttpError",
+                                                "type": "boolean",
+                                                "label": "Return error if HTTP request fails",
+                                                "required": true
+                                            },
+                                            {
+                                                "name": "shareCookies",
+                                                "type": "boolean",
+                                                "label": "Share cookies with other HTTP modules",
+                                                "required": true
+                                            },
+                                            {
+                                                "name": "headers",
+                                                "spec": {
+                                                    "name": "value",
+                                                    "spec": [
+                                                        {
+                                                            "name": "name",
+                                                            "type": "text",
+                                                            "label": "Name",
+                                                            "required": true,
+                                                            "validate": {
+                                                                "pattern": "^[-!#$%&'*+.^_`|~0-9A-Za-z]+$"
+                                                            }
+                                                        },
+                                                        {
+                                                            "name": "value",
+                                                            "type": "text",
+                                                            "label": "Value"
+                                                        }
+                                                    ],
+                                                    "type": "collection",
+                                                    "label": "Header"
+                                                },
+                                                "type": "array",
+                                                "label": "Headers"
+                                            },
+                                            {
+                                                "name": "queryParameters",
+                                                "spec": {
+                                                    "name": "value",
+                                                    "spec": [
+                                                        {
+                                                            "name": "name",
+                                                            "type": "text",
+                                                            "label": "Name",
+                                                            "required": true
+                                                        },
+                                                        {
+                                                            "name": "value",
+                                                            "type": "text",
+                                                            "label": "Value"
+                                                        }
+                                                    ],
+                                                    "type": "collection",
+                                                    "label": "Parameter"
+                                                },
+                                                "type": "array",
+                                                "label": "Query parameters"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "id": 5,
+                                    "module": "linkedin:ShareImage",
+                                    "version": 2,
+                                    "parameters": {
+                                        "__IMTCONN__": 7901184
+                                    },
+                                    "mapper": {
+                                        "data": "{{3.data}}",
+                                        "method": "upload",
+                                        "content": "{{1.text}}",
+                                        "fileName": "{{3.fileName}}",
+                                        "visibility": "PUBLIC",
+                                        "feedDistribution": "MAIN_FEED",
+                                        "isReshareDisabledByAuthor": false
+                                    },
+                                    "metadata": {
+                                        "designer": {
+                                            "x": 900,
+                                            "y": -150
+                                        },
+                                        "restore": {
+                                            "expect": {
+                                                "method": {
+                                                    "label": "Upload by file"
+                                                },
+                                                "visibility": {
+                                                    "mode": "chose",
+                                                    "label": "Anyone"
+                                                },
+                                                "feedDistribution": {
+                                                    "mode": "chose",
+                                                    "label": "Main feed"
+                                                },
+                                                "isReshareDisabledByAuthor": {
+                                                    "mode": "chose"
+                                                }
+                                            },
+                                            "parameters": {
+                                                "__IMTCONN__": {
+                                                    "data": {
+                                                        "scoped": "true",
+                                                        "connection": "linkedin2"
+                                                    },
+                                                    "label": "My LinkedIn connection (Peter Ayoola)"
+                                                }
+                                            }
+                                        },
+                                        "parameters": [
+                                            {
+                                                "name": "__IMTCONN__",
+                                                "type": "account:linkedin2,linkedin-openid",
+                                                "label": "Connection",
+                                                "required": true
+                                            }
+                                        ],
+                                        "expect": [
+                                            {
+                                                "name": "method",
+                                                "type": "select",
+                                                "label": "Choose Upload Method",
+                                                "required": true,
+                                                "validate": {
+                                                    "enum": [
+                                                        "upload",
+                                                        "link"
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "name": "title",
+                                                "type": "text",
+                                                "label": "Title"
+                                            },
+                                            {
+                                                "name": "altText",
+                                                "type": "text",
+                                                "label": "Alt Text"
+                                            },
+                                            {
+                                                "name": "content",
+                                                "type": "text",
+                                                "label": "Content",
+                                                "required": true
+                                            },
+                                            {
+                                                "name": "visibility",
+                                                "type": "select",
+                                                "label": "Visibility",
+                                                "required": true,
+                                                "validate": {
+                                                    "enum": [
+                                                        "PUBLIC",
+                                                        "CONNECTIONS",
+                                                        "LOGGED_IN"
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "name": "feedDistribution",
+                                                "type": "select",
+                                                "label": "Feed Distribution",
+                                                "required": true,
+                                                "validate": {
+                                                    "enum": [
+                                                        "MAIN_FEED",
+                                                        "NONE"
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "name": "isReshareDisabledByAuthor",
+                                                "type": "boolean",
+                                                "label": "Is Reshare Disabled",
+                                                "required": true
+                                            },
+                                            {
+                                                "name": "fileName",
+                                                "type": "text",
+                                                "label": "File name",
+                                                "required": true
+                                            },
+                                            {
+                                                "name": "data",
+                                                "type": "buffer",
+                                                "label": "Data",
+                                                "required": true
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "flow": [
+                                {
+                                    "id": 4,
+                                    "module": "linkedin:CreatePost",
+                                    "version": 2,
+                                    "parameters": {
+                                        "__IMTCONN__": 7901184
+                                    },
+                                    "filter": {
+                                        "name": "",
+                                        "conditions": [
+                                            [
+                                                {
+                                                    "a": "{{1.post_type}}",
+                                                    "b": "Text",
+                                                    "o": "text:equal"
+                                                }
+                                            ]
+                                        ]
+                                    },
+                                    "mapper": {
+                                        "content": "{{1.text}}",
+                                        "visibility": "PUBLIC",
+                                        "feedDistribution": "MAIN_FEED",
+                                        "isReshareDisabledByAuthor": false
+                                    },
+                                    "metadata": {
+                                        "designer": {
+                                            "x": 600,
+                                            "y": 150
+                                        },
+                                        "restore": {
+                                            "expect": {
+                                                "type": {
+                                                    "mode": "chose",
+                                                    "empty": true
+                                                },
+                                                "mentions": {
+                                                    "mode": "chose"
+                                                },
+                                                "visibility": {
+                                                    "mode": "chose",
+                                                    "label": "Anyone"
+                                                },
+                                                "feedDistribution": {
+                                                    "mode": "chose",
+                                                    "label": "Main feed"
+                                                },
+                                                "isReshareDisabledByAuthor": {
+                                                    "mode": "chose"
+                                                }
+                                            },
+                                            "parameters": {
+                                                "__IMTCONN__": {
+                                                    "data": {
+                                                        "scoped": "true",
+                                                        "connection": "linkedin2"
+                                                    },
+                                                    "label": "My LinkedIn connection (Peter Ayoola)"
+                                                }
+                                            }
+                                        },
+                                        "parameters": [
+                                            {
+                                                "name": "__IMTCONN__",
+                                                "type": "account:linkedin2,linkedin-openid",
+                                                "label": "Connection",
+                                                "required": true
+                                            }
+                                        ],
+                                        "expect": [
+                                            {
+                                                "name": "content",
+                                                "type": "text",
+                                                "label": "Content",
+                                                "required": true
+                                            },
+                                            {
+                                                "name": "mentions",
+                                                "spec": [
+                                                    {
+                                                        "name": "entity",
+                                                        "type": "select",
+                                                        "label": "Entity",
+                                                        "options": [
+                                                            {
+                                                                "label": "Person",
+                                                                "value": "member",
+                                                                "nested": [
+                                                                    {
+                                                                        "help": "For example, `urn:li:person:1234`. Only mention someone with a connection to the authenticated user.",
+                                                                        "name": "urn",
+                                                                        "type": "text",
+                                                                        "label": "Entity URN",
+                                                                        "required": true
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                "label": "Company",
+                                                                "value": "company",
+                                                                "nested": [
+                                                                    {
+                                                                        "help": "For example, `urn:li:organization:123456`.",
+                                                                        "name": "urn",
+                                                                        "type": "text",
+                                                                        "label": "Entity URN",
+                                                                        "required": true
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ],
+                                                        "required": true
+                                                    },
+                                                    {
+                                                        "name": "name",
+                                                        "type": "text",
+                                                        "label": "Entity Name",
+                                                        "required": true
+                                                    },
+                                                    {
+                                                        "name": "start",
+                                                        "type": "number",
+                                                        "label": "Start",
+                                                        "required": true
+                                                    }
+                                                ],
+                                                "type": "array",
+                                                "label": "Mentions"
+                                            },
+                                            {
+                                                "name": "type",
+                                                "type": "select",
+                                                "label": "Media Type",
+                                                "validate": {
+                                                    "enum": [
+                                                        "ARTICLE"
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "name": "visibility",
+                                                "type": "select",
+                                                "label": "Visibility",
+                                                "required": true,
+                                                "validate": {
+                                                    "enum": [
+                                                        "PUBLIC",
+                                                        "CONNECTIONS",
+                                                        "LOGGED_IN"
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "name": "feedDistribution",
+                                                "type": "select",
+                                                "label": "Feed Distribution",
+                                                "required": true,
+                                                "validate": {
+                                                    "enum": [
+                                                        "MAIN_FEED",
+                                                        "NONE"
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "name": "isReshareDisabledByAuthor",
+                                                "type": "boolean",
+                                                "label": "Is Reshare Disabled",
+                                                "required": true
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "metadata": {
+        "version": 1
+    }
+}
