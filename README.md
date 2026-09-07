@@ -101,23 +101,11 @@ This allows the spreadsheet to act as both a **content queue** and a simple **pu
 
 ## Timezone-Aware Catch-Up Logic
 
-The workflow uses **Africa/Lagos** as its scheduling timezone.
+The workflow uses Africa/Lagos as its scheduling timezone.
 
-Instead of requiring the workflow to execute at the exact scheduled second, the automation checks whether:
+Instead of requiring execution at the exact scheduled second, the workflow checks whether the post is scheduled for the current date and whether the scheduled time has already been reached.
 
-1. The content is scheduled for today.
-2. The current time is greater than or equal to the scheduled publishing time.
-
-Example:
-
-```text
-Scheduled time: 12:15 PM
-Current time:   12:18 PM
-
-Result: Eligible for publishing
-```
-
-This provides catch-up behavior if execution happens slightly later than expected.
+This allows a post to remain eligible if execution happens slightly later than expected.
 
 The logic is implemented in JavaScript inside an n8n Code node.
 
@@ -420,36 +408,6 @@ Each content record has a unique `Post_ID`, which is used to identify the correc
 
 ---
 
-# Repository Structure
-
-```text
-automated-social-content-publishing-engine/
-│
-├── README.md
-│
-├── .gitignore
-│
-├── workflows/
-│   │
-│   ├── n8n/
-│   │   └── content-publishing-engine.json
-│   │
-│   └── make/
-│       └── linkedin-publisher-blueprint.json
-│
-├── docs/
-│   ├── architecture.md
-│   ├── workflow-logic.md
-│   ├── linkedin-make-integration.md
-│   └── formatting-system.md
-│
-└── screenshots/
-    ├── n8n-full-workflow.png
-    ├── n8n-platform-routing.png
-    ├── make-linkedin-routing.png
-    └── google-sheets-content-queue.png
-```
-
 ---
 
 # Screenshots
@@ -512,14 +470,6 @@ The main problems are solved through:
 - External API/service integration
 
 The goal was not to add AI where it was unnecessary, but to design a predictable system that could automatically execute a clearly defined business process.
-
----
-
-# Current Status
-
-The workflow has been running in my environment for approximately **two weeks**, automatically processing scheduled content for LinkedIn and X.
-
-The repository contains a sanitized version of the workflow. Credentials, private webhook URLs, account identifiers, and other sensitive configuration values are replaced with placeholders.
 
 ---
 
