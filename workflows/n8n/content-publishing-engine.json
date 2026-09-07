@@ -1,0 +1,553 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "14-Day Automation Master Sheet",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 0,
+          "mode": "list",
+          "cachedResultName": "Content Engine Setup Guide",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Status"
+            }
+          ]
+        },
+        "options": {
+          "returnFirstMatch": false
+        }
+      },
+      "id": "b71222d3-b57d-4f58-bb0e-99e6b72f8155",
+      "name": "Fetch Today's Post",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -640,
+        672
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "YOUR_GOOGLE_SHEETS_CREDENTIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "linkedin-cond",
+                    "leftValue": "={{ $json['Platform'] }}",
+                    "rightValue": "LinkedIn",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "x-cond",
+                    "leftValue": "={{ $json['Platform'] }}",
+                    "rightValue": "X",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c8d25087-46a7-4191-a96b-d1a56594c9b9",
+      "name": "Route by Platform",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        -192,
+        672
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "14-Day Automation Master Sheet",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 0,
+          "mode": "list",
+          "cachedResultName": "Content Engine Setup Guide",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": 0,
+            "Status": "={{ $json.Status }}",
+            "Post_ID": "={{ $json.Post_ID }}"
+          },
+          "matchingColumns": [
+            "Post_ID"
+          ],
+          "schema": [
+            {
+              "id": "Post_ID",
+              "displayName": "Post_ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Day",
+              "displayName": "Day",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Peak Viral Time",
+              "displayName": "Peak Viral Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Platform",
+              "displayName": "Platform",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Visual Type",
+              "displayName": "Visual Type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "What to Screenshot / Attach",
+              "displayName": "What to Screenshot / Attach",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Image URL",
+              "displayName": "Image URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Post Copy",
+              "displayName": "Post Copy",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "b80f566f-7aa3-4dc7-8297-98c749682819",
+      "name": "Mark as Posted",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        704,
+        672
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "YOUR_GOOGLE_SHEETS_CREDENTIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "YOUR_MAKE_WEBHOOK_URL",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "={{ $json['Post Copy'].replace(/~~/g, '\\n\\n').replace(/~/g, '\\n') }}"
+            },
+            {
+              "name": "image_url",
+              "value": "={{ $json['Image URL'] }}"
+            },
+            {
+              "name": "post_type",
+              "value": "={{ $json['Image URL'] ? 'Image' : 'Text' }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7aff936e-6f5a-4d87-9016-56b98a6f0243",
+      "name": "LinkedIn Publisher via Make Webhook",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        256,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "post",
+        "organizationId": "YOUR_BUFFER_ORGANIZATION_ID",
+        "channelId": "YOUR_BUFFER_CHANNEL_ID",
+        "postText": "={{ $json['Post Copy'].replace(/~~/g, '\\n\\n').replace(/~/g, '\\n') }}",
+        "schedulingType": "notification",
+        "attachmentType": "image",
+        "imageUrl": "={{ $json['Image URL'] }}",
+        "imageThumbnailUrl": "={{ $json['Image URL'] }}"
+      },
+      "type": "@bufferapp/n8n-nodes-buffer.buffer",
+      "typeVersion": 1,
+      "position": [
+        256,
+        672
+      ],
+      "id": "8aa2b90e-7465-4d13-aec9-bfa34fe483ac",
+      "name": "Create a post with image",
+      "credentials": {
+        "bufferApi": {
+          "id": "YOUR_BUFFER_CREDENTIAL_ID",
+          "name": "YOUR_BUFFER_CREDENTIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "post",
+        "organizationId": "YOUR_BUFFER_ORGANIZATION_ID",
+        "channelId": "YOUR_BUFFER_CHANNEL_ID",
+        "postText": "={{ $json['Post Copy'].replace(/~~/g, '\\n\\n').replace(/~/g, '\\n') }}",
+        "schedulingType": "notification",
+        "attachmentType": "none"
+      },
+      "type": "@bufferapp/n8n-nodes-buffer.buffer",
+      "typeVersion": 1,
+      "position": [
+        256,
+        864
+      ],
+      "id": "7d768e84-b598-432e-b5e4-7776f5efbaf5",
+      "name": "Create a post without image",
+      "credentials": {
+        "bufferApi": {
+          "id": "YOUR_BUFFER_CREDENTIAL_ID",
+          "name": "YOUR_BUFFER_CREDENTIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. Get current time specifically in your timezone\nconst now = new Date(new Date().toLocaleString(\"en-US\", {timeZone: \"Africa/Lagos\"}));\n\n// 2. Format today's date as YYYY-MM-DD to match your sheet\nconst todayStr = now.getFullYear() + \"-\" + String(now.getMonth() + 1).padStart(2, '0') + \"-\" + String(now.getDate()).padStart(2, '0');\n\nreturn items.filter(item => {\n  const postDate = item.json['Date'];\n  const timeStr = item.json['Peak Viral Time']; // e.g. \"12:15 PM\"\n\n  // Ignore if it's not scheduled for today\n  if (postDate !== todayStr) return false;\n\n  // 3. Convert sheet time (12:15 PM) to a real machine timestamp\n  const [time, modifier] = timeStr.split(' ');\n  let [hours, minutes] = time.split(':');\n  hours = parseInt(hours, 10);\n  if (hours === 12 && modifier === 'AM') hours = 0;\n  if (hours < 12 && modifier === 'PM') hours += 12;\n\n  const scheduledTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, parseInt(minutes, 10));\n\n  // 4. The Golden Rule: If current time is greater than or equal to scheduled time, POST IT.\n  return now >= scheduledTime;\n});"
+      },
+      "id": "151bf8d1-3235-4a92-9eca-628a1a96a991",
+      "name": "Filter Time (Catch-Up Logic)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -416,
+        672
+      ],
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "e204c305-b24c-4b04-b35e-b3f445b4d916",
+              "leftValue": "={{ $json['Image URL'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        32,
+        768
+      ],
+      "id": "c4af1c9f-2661-498e-9463-47b3e4d23bc1",
+      "name": "Check Image Status"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 8,
+              "triggerAtMinute": 30
+            },
+            {
+              "triggerAtHour": 12,
+              "triggerAtMinute": 15
+            }
+          ]
+        }
+      },
+      "id": "da3fb861-68bc-4882-8a8f-7cbd32600068",
+      "name": "Schedule Trigger (8:30, 12:15)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [
+        -864,
+        672
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. We completely IGNORE whatever Buffer or LinkedIn just sent.\n// We don't read their data, so their formatting cannot break this node.\n\n// 2. We securely fetch the clean ID from the Filter node instead.\nconst cleanData = $items(\"Filter Time (Catch-Up Logic)\")[0].json;\n\n// 3. We build a brand new, strictly formatted package for Google Sheets.\nreturn [\n  {\n    json: {\n      Post_ID: cleanData.Post_ID,\n      Status: \"Posted\"\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        672
+      ],
+      "id": "959d3a10-ae36-42b0-ad0b-69abf8122749",
+      "name": "Success Checkpoint"
+    }
+  ],
+  "connections": {
+    "Fetch Today's Post": {
+      "main": [
+        [
+          {
+            "node": "Filter Time (Catch-Up Logic)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route by Platform": {
+      "main": [
+        [
+          {
+            "node": "LinkedIn Publisher via Make Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Check Image Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LinkedIn Publisher via Make Webhook": {
+      "main": [
+        [
+          {
+            "node": "Success Checkpoint",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a post with image": {
+      "main": [
+        [
+          {
+            "node": "Success Checkpoint",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a post without image": {
+      "main": [
+        [
+          {
+            "node": "Success Checkpoint",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Time (Catch-Up Logic)": {
+      "main": [
+        [
+          {
+            "node": "Route by Platform",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Image Status": {
+      "main": [
+        [
+          {
+            "node": "Create a post with image",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create a post without image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger (8:30, 12:15)": {
+      "main": [
+        [
+          {
+            "node": "Fetch Today's Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Success Checkpoint": {
+      "main": [
+        [
+          {
+            "node": "Mark as Posted",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {}
+}
