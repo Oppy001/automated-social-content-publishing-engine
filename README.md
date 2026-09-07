@@ -408,8 +408,6 @@ Each content record has a unique `Post_ID`, which is used to identify the correc
 
 ---
 
----
-
 # Screenshots
 
 ## n8n Workflow
