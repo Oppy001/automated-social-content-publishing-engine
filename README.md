@@ -408,44 +408,52 @@ Each content record has a unique `Post_ID`, which is used to identify the correc
 
 ---
 
+## Configuration Note
+
+This repository contains a sanitized portfolio version of the workflow.
+
+Private credentials, account identifiers, webhook URLs, Google Sheet IDs,
+and other environment-specific values have been replaced with placeholders.
+
+The Google Sheets workflow logic expects a `Status` column as part of the
+content-tracking structure. Because the public version does not contain the
+original connected spreadsheet or credentials, some Google Sheets fields may
+display unavailable or unresolved options when viewed outside the original
+environment.
+
+This does not affect the documented workflow design or routing logic shown in
+the repository.
+
 # Screenshots
 
 ## n8n Workflow
 
-_Add full workflow screenshot here._
-
 ```markdown
-![n8n Workflow](screenshots/n8n-full-workflow.png)
+![n8n Workflow](screenshots/n8n-full-workflow.jpg)
 ```
 
 ---
 
 ## Platform Routing
 
-_Add a screenshot showing the LinkedIn/X routing logic._
-
 ```markdown
-![Platform Routing](screenshots/n8n-platform-routing.png)
+![Platform Routing](screenshots/n8n-platform-routing.jpg)
 ```
 
 ---
 
 ## LinkedIn Make.com Scenario
 
-_Add the Make.com scenario showing the image/text router._
-
 ```markdown
-![LinkedIn Make Workflow](screenshots/make-linkedin-routing.png)
+![LinkedIn Make Workflow](screenshots/make-linkedin-routing.jpg)
 ```
 
 ---
 
 ## Google Sheets Content Queue
 
-_Add a cropped screenshot of the Google Sheet showing fields such as Post ID, Date, Time, Platform, Image URL, Post Copy and Status._
-
 ```markdown
-![Google Sheets Content Queue](screenshots/google-sheets-content-queue.png)
+![Google Sheets Content Queue](screenshots/google-sheets-content-queue.jpg)
 ```
 
 ---
