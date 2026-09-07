@@ -428,33 +428,25 @@ the repository.
 
 ## n8n Workflow
 
-```markdown
 ![n8n Workflow](screenshots/n8n-full-workflow.jpg)
-```
 
 ---
 
 ## Platform Routing
 
-```markdown
 ![Platform Routing](screenshots/n8n-platform-routing.jpg)
-```
 
 ---
 
 ## LinkedIn Make.com Scenario
 
-```markdown
 ![LinkedIn Make Workflow](screenshots/make-linkedin-routing.jpg)
-```
 
 ---
 
 ## Google Sheets Content Queue
 
-```markdown
 ![Google Sheets Content Queue](screenshots/google-sheets-content-queue.jpg)
-```
 
 ---
 
